@@ -48,6 +48,9 @@ const Dish = ({ id, name, description, price, image }) => {
 						<TouchableOpacity className='font-bold'>
 							<Entypo name='circle-with-plus' size={30} color='#00CCBB' />
 						</TouchableOpacity>
+						<TouchableOpacity className='font-bold'>
+							<Entypo name='circle-with-plus' size={30} color='#00CCBB' />
+						</TouchableOpacity>
 					</View>
 				</View>
 			)}
