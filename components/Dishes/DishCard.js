@@ -2,10 +2,38 @@ import { Entypo } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import Currency from 'react-currency-formatter';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+	addToBasket,
+	removeFromBasket,
+	selectBasketItemsWithId,
+} from '../../redux/Features/basketSlice';
 import { urlFor } from '../../sanity';
 
-const Dish = ({ id, name, description, price, image }) => {
+const DishCard = ({ id, name, description, price, image }) => {
 	const [isPressed, setIsPressed] = useState(false);
+	const items = useSelector((state) => selectBasketItemsWithId(state, id));
+	const dispatch = useDispatch();
+
+	// add item to redux
+	const addItemToBasket = () => {
+		dispatch(
+			addToBasket({
+				id,
+				name,
+				description,
+				price,
+				image,
+			})
+		);
+	};
+
+	// remove item from basket
+	const removeItemFromBasket = () => {
+		if (!items.length > 0) return;
+
+		dispatch(removeFromBasket({ id }));
+	};
 
 	return (
 		<>
@@ -41,11 +69,24 @@ const Dish = ({ id, name, description, price, image }) => {
 			{isPressed && (
 				<View className='bg-white px-4'>
 					<View className='flex-row items-center space-x-2 pb-3'>
-						<TouchableOpacity className='font-bold'>
-							<Entypo name='circle-with-minus' size={30} color='#00CCBB' />
+						{/* remove btn */}
+						<TouchableOpacity
+							disabled={!items.length}
+							onPress={removeItemFromBasket}
+							className='font-bold'
+						>
+							<Entypo
+								name='circle-with-minus'
+								size={30}
+								color={items.length > 0 ? '#00CCBB' : 'gray'}
+							/>
 						</TouchableOpacity>
-						<Text className='text-lg font-bold'>0</Text>
-						<TouchableOpacity className='font-bold'>
+
+						{/* quantity amount */}
+						<Text className='text-lg font-bold'>{items.length}</Text>
+
+						{/* add btn */}
+						<TouchableOpacity onPress={addItemToBasket} className='font-bold'>
 							<Entypo name='circle-with-plus' size={30} color='#00CCBB' />
 						</TouchableOpacity>
 					</View>
@@ -55,4 +96,4 @@ const Dish = ({ id, name, description, price, image }) => {
 	);
 };
 
-export default Dish;
+export default DishCard;
