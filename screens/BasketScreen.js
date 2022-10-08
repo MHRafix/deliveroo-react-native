@@ -1,4 +1,4 @@
-import { Entypo } from '@expo/vector-icons';
+import { Entypo, Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import React, { useLayoutEffect, useMemo, useState } from 'react';
 import Currency from 'react-currency-formatter';
@@ -96,7 +96,7 @@ const BasketScreen = () => {
 										)
 									}
 								>
-									Remove
+									<Ionicons name='md-remove-circle' size={24} color='#00CCBB' />
 								</Text>
 							</TouchableOpacity>
 						</View>

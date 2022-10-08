@@ -2,6 +2,7 @@ import { Entypo } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
+import MapView from 'react-native-maps';
 import * as Progress from 'react-native-progress';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useSelector } from 'react-redux';
@@ -43,6 +44,17 @@ const DeliveryScreen = () => {
 					</Text>
 				</View>
 			</SafeAreaView>
+
+			<MapView
+				initialRegion={{
+					latitude: resturant.lat,
+					longitude: resturant.long,
+					latitudeDelta: 0.005,
+					longitudeDelta: 0.005,
+				}}
+				className='flex-1 -mt-10 z-0'
+				mapType='mutedStandard'
+			></MapView>
 		</View>
 	);
 };
