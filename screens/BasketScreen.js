@@ -68,72 +68,95 @@ const BasketScreen = () => {
 					</TouchableOpacity>
 				</View>
 
-				<ScrollView className='devide-y devide-gray-200'>
-					{Object.entries(basketItems).map(([key, items]) => (
-						<View
-							key={key}
-							className='flex-row items-center space-x-3 bg-white py-2 px-5'
-						>
-							<Text className='text-[#00CCBB]'>{items.length} x</Text>
-							<Image
-								source={{ uri: urlFor(items[0]?.image).url() }}
-								className='h-12 w-12 rounded-full'
-							/>
-							<Text className='flex-1'>{items[0]?.name.slice(0, 20)}</Text>
-
-							<Text>
-								<Currency quantity={items[0]?.price} currency='usd' />
-							</Text>
-
-							<TouchableOpacity>
-								<Text
-									className='text-[#00CCBB] text-xs'
-									onPress={() =>
-										dispatch(
-											removeFromBasket({
-												id: key,
-											})
-										)
-									}
+				{Object.entries(basketItems).length ? (
+					<View>
+						<ScrollView className='devide-y devide-gray-200'>
+							{Object.entries(basketItems).map(([key, items]) => (
+								<View
+									key={key}
+									className='flex-row items-center space-x-3 bg-white py-2 px-5'
 								>
-									<Ionicons name='md-remove-circle' size={24} color='#00CCBB' />
+									<Text className='text-[#00CCBB]'>{items.length} x</Text>
+									<Image
+										source={{ uri: urlFor(items[0]?.image).url() }}
+										className='h-12 w-12 rounded-full'
+									/>
+									<Text className='flex-1'>{items[0]?.name.slice(0, 20)}</Text>
+
+									<Text>
+										<Currency quantity={items[0]?.price} currency='usd' />
+									</Text>
+
+									<TouchableOpacity>
+										<Text
+											className='text-[#00CCBB] text-xs'
+											onPress={() =>
+												dispatch(
+													removeFromBasket({
+														id: key,
+													})
+												)
+											}
+										>
+											<Ionicons
+												name='md-remove-circle'
+												size={24}
+												color='#00CCBB'
+											/>
+										</Text>
+									</TouchableOpacity>
+								</View>
+							))}
+						</ScrollView>
+
+						<View className='p-5 bg-white mt-5'>
+							<View className='flex-row justify-between my-1'>
+								<Text className='text-gray-400'>Subtotal</Text>
+								<Text className='text-gray-400'>
+									<Currency quantity={basketTotal} currency='usd' />
+								</Text>
+							</View>
+
+							<View className='flex-row justify-between my-1'>
+								<Text className='text-gray-400'>Delivery Fee</Text>
+								<Text className='text-gray-400'>
+									<Currency quantity={5.99} currency='usd' />
+								</Text>
+							</View>
+
+							<View className='flex-row justify-between my-1'>
+								<Text className='font-extrabold'>Order Total</Text>
+								<Text className='font-extrabold'>
+									<Currency quantity={basketTotal + 5.99} currency='usd' />
+								</Text>
+							</View>
+
+							<TouchableOpacity
+								onPress={() => navigation.navigate('PreparingOrder')}
+								className='rounded-lg my-1 bg-[#00CCBB] p-3'
+							>
+								<Text className='text-center text-white text-lg font-bold'>
+									Place Order
 								</Text>
 							</TouchableOpacity>
 						</View>
-					))}
-				</ScrollView>
+					</View>
+				) : (
+					<View>
+						<Image
+							source={{
+								uri: 'https://cdn.dribbble.com/users/189859/screenshots/3639645/abc.gif',
+								// uri: urlFor().url()
+							}}
+							className='h-20 w-20 m-auto bg-gray-300 p-4 rounded-full'
+							style={{ margin: 'auto' }}
+						/>
 
-				<View className='p-5 bg-white mt-5'>
-					<View className='flex-row justify-between my-1'>
-						<Text className='text-gray-400'>Subtotal</Text>
-						<Text className='text-gray-400'>
-							<Currency quantity={basketTotal} currency='usd' />
+						<Text className='text-red-400 text-center text-lg font-semibold'>
+							No items found in basket!
 						</Text>
 					</View>
-
-					<View className='flex-row justify-between my-1'>
-						<Text className='text-gray-400'>Delivery Fee</Text>
-						<Text className='text-gray-400'>
-							<Currency quantity={5.99} currency='usd' />
-						</Text>
-					</View>
-
-					<View className='flex-row justify-between my-1'>
-						<Text className='font-extrabold'>Order Total</Text>
-						<Text className='font-extrabold'>
-							<Currency quantity={basketTotal + 5.99} currency='usd' />
-						</Text>
-					</View>
-
-					<TouchableOpacity
-						onPress={() => navigation.navigate('PreparingOrder')}
-						className='rounded-lg my-1 bg-[#00CCBB] p-3'
-					>
-						<Text className='text-center text-white text-lg font-bold'>
-							Place Order
-						</Text>
-					</TouchableOpacity>
-				</View>
+				)}
 			</View>
 		</SafeAreaView>
 	);
